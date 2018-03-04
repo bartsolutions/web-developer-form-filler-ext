@@ -141,6 +141,19 @@ function getRandomStorageId() {
     return key;
 }
 
+//credit: https://stackoverflow.com/questions/3066586/get-string-in-yyyymmdd-format-from-js-date-object#30458400
+function getTimestampId() {
+  var date = new Date();
+  var yyyy = date.getFullYear();
+  var mm = date.getMonth() < 9 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1); // getMonth() is zero-based
+  var dd  = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+  var hh = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+  var min = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+  var ss = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+
+  return yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + min + ':' + ss;
+}
+
 chrome.tabs.query({ 'active': true, 'currentWindow': true }, function (tab) {
     tab_url = tab[0].url;
     refreshSetsList(tab_url);
@@ -188,7 +201,7 @@ $(document).ready(function () {
 				importedForm.name += '-global';
 			}
 			
-			var key = getRandomStorageId();
+			var key = getTimestampId();
 			localStorage.setItem(key, JSON.stringify(importedForm));
 
 		}
@@ -233,7 +246,7 @@ $(document).ready(function () {
                 error.hide();
             }
 
-            var key = getRandomStorageId();
+            var key = getTimestampId();
 
             var setSettings = {
 				url: tab_url,
